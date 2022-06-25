@@ -1,12 +1,22 @@
 import robot from 'robotjs';
 import type { Position } from './types';
 
-export const drawCircle = (parameters: string[]) => {
-  const radius = parameters[0] ? parseInt(parameters[0], 10) : 0;
-  const mousePos = robot.getMousePos();
-  robot.dragMouse(mousePos.x + radius, mousePos.y);
+const delay = 300;
+
+const sleep = () => new Promise((resolve) => {
+  setTimeout(resolve, delay);
+});
+
+export const getMousePosition = (): Position => robot.getMousePos();
+
+export const moveMouse = (mousePos: Position, x = 0, y = 0) => {
+  robot.dragMouse(mousePos.x + x, mousePos.y + y);
+};
+
+export const drawCircle = async (mousePos: Position, radius: number) => {
   robot.mouseToggle('down');
-  for (let i = 0; i <= Math.PI * 2; i += 0.01) {
+  await sleep();
+  for (let i = 0; i <= Math.PI * 2.01; i += 0.1) {
     const x = mousePos.x + radius * Math.cos(i);
     const y = mousePos.y + radius * Math.sin(i);
     robot.dragMouse(x, y);
@@ -14,4 +24,16 @@ export const drawCircle = (parameters: string[]) => {
   robot.mouseToggle('up');
 };
 
-export const getMousePosition = (): Position => robot.getMousePos();
+export const drawRectangle = async (
+  mousePos: Position,
+  width: number,
+  height = width,
+) => {
+  robot.mouseToggle('down');
+  await sleep();
+  robot.dragMouse(mousePos.x + width, mousePos.y);
+  robot.dragMouse(mousePos.x + width, mousePos.y + height);
+  robot.dragMouse(mousePos.x, mousePos.y + height);
+  robot.dragMouse(mousePos.x, mousePos.y);
+  robot.mouseToggle('up');
+};

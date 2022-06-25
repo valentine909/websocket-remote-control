@@ -2,7 +2,7 @@ export const FrontCommands = {
   circle: 'draw_circle',
   square: 'draw_square',
   rectangle: 'draw_rectangle',
-  mouse: 'mouse_position',
+  position: 'mouse_position',
   screen: 'prnt_scrn',
   up: 'mouse_up',
   left: 'mouse_left',
