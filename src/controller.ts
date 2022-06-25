@@ -4,11 +4,15 @@ import type { RawData } from 'ws';
 import type WebSocket from 'ws';
 import { FrontCommands } from './commands';
 import {
-  drawCircle, drawRectangle, getMousePosition, moveMouse,
-} from './handler';
+  drawCircle,
+  drawRectangle,
+  getMousePosition,
+  moveMouse,
+} from './handlers';
 import { parseArgs } from './helper';
+import { getScreenShot } from './screenshotHandler';
 
-export const CommandsController = (ws: WebSocket, instruction: RawData) => {
+export const CommandsController = async (ws: WebSocket, instruction: RawData): Promise<void> => {
   const [command, width, height] = parseArgs(instruction.toString());
   const pos = getMousePosition();
   switch (command) {
@@ -33,6 +37,9 @@ export const CommandsController = (ws: WebSocket, instruction: RawData) => {
       break;
     case FrontCommands.position:
       ws.send(`${FrontCommands.position} ${pos.x},${pos.y}`);
+      break;
+    case FrontCommands.screen:
+      ws.send(`${FrontCommands.screen} ${await getScreenShot(pos)}`);
       break;
     case FrontCommands.up:
       if (typeof width === 'number') {
