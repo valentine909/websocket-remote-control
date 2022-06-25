@@ -1,7 +1,5 @@
 // @ts-ignore
-import type { RawData } from 'ws';
-// @ts-ignore
-import type WebSocket from 'ws';
+import type WebSocket, { RawData } from 'ws';
 import { FrontCommands } from './commands';
 import {
   drawCircle,
