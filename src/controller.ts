@@ -66,4 +66,5 @@ export const CommandsController = async (ws: WebSocket, instruction: RawData): P
     default:
       break;
   }
+  console.log('Command', '\x1b[33m', instruction.toString(), '\x1b[0m', 'fullfilled successfully');
 };
