@@ -16,5 +16,5 @@ wss.on('connection', (ws) => {
     CommandsController(this, data);
   });
 
-  ws.send('Hello_from_backend');
+  ws.send('Hello_from_backend\0');
 });
