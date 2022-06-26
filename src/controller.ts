@@ -1,5 +1,4 @@
-// @ts-ignore
-import type WebSocket, { RawData } from 'ws';
+import type internal from 'stream';
 import { FrontCommands } from './commands';
 import {
   drawCircle,
@@ -7,64 +6,92 @@ import {
   getMousePosition,
   moveMouse,
 } from './handlers';
-import { parseArgs } from './helper';
+import { failure, parseArgs, success } from './helper';
 import { getScreenShot } from './screenshotHandler';
 
-export const CommandsController = async (ws: WebSocket, instruction: RawData): Promise<void> => {
-  const [command, width, height] = parseArgs(instruction.toString());
+export const CommandsController = async (
+  stream: internal.Duplex,
+  instruction: string,
+): Promise<void> => {
+  const [command, width, height] = parseArgs(instruction);
   const pos = getMousePosition();
+  console.log(command, width, height);
   switch (command) {
     case FrontCommands.circle:
       if (typeof width === 'number') {
         moveMouse(pos, width);
         drawCircle(pos, width);
-        ws.send(`${FrontCommands.circle}\0`);
+        stream.write(`${FrontCommands.circle}\0`);
+        success(instruction);
+      } else {
+        failure(instruction);
       }
       break;
     case FrontCommands.square:
       if (typeof width === 'number') {
         drawRectangle(pos, width);
-        ws.send(`${FrontCommands.square}\0`);
+        stream.write(`${FrontCommands.square}\0`);
+        success(instruction);
+      } else {
+        failure(instruction);
       }
       break;
     case FrontCommands.rectangle:
       if (typeof width === 'number' && typeof height === 'number') {
         drawRectangle(pos, width, height);
-        ws.send(`${FrontCommands.rectangle}\0`);
+        stream.write(`${FrontCommands.rectangle}\0`);
+        success(instruction);
+      } else {
+        failure(instruction);
       }
       break;
     case FrontCommands.position:
-      ws.send(`${FrontCommands.position} ${pos.x},${pos.y}\0`);
+      stream.write(`${FrontCommands.position} ${pos.x},${pos.y}\0`);
+      success(instruction);
       break;
     case FrontCommands.screen:
-      ws.send(`${FrontCommands.screen} ${await getScreenShot(pos)}\0`);
+      stream.write(`${FrontCommands.screen} ${await getScreenShot(pos)}\0`);
+      success(instruction);
       break;
     case FrontCommands.up:
       if (typeof width === 'number') {
         moveMouse(pos, 0, -width);
-        ws.send(`${FrontCommands.up}\0`);
+        stream.write(`${FrontCommands.up}\0`);
+        success(instruction);
+      } else {
+        failure(instruction);
       }
       break;
     case FrontCommands.down:
       if (typeof width === 'number') {
         moveMouse(pos, 0, width);
-        ws.send(`${FrontCommands.down}\0`);
+        stream.write(`${FrontCommands.down}\0`);
+        success(instruction);
+      } else {
+        failure(instruction);
       }
       break;
     case FrontCommands.right:
       if (typeof width === 'number') {
         moveMouse(pos, width, 0);
-        ws.send(`${FrontCommands.right}\0`);
+        stream.write(`${FrontCommands.right}\0`);
+        success(instruction);
+      } else {
+        failure(instruction);
       }
       break;
     case FrontCommands.left:
       if (typeof width === 'number') {
         moveMouse(pos, -width, 0);
-        ws.send(`${FrontCommands.left}\0`);
+        stream.write(`${FrontCommands.left}\0`);
+        success(instruction);
+      } else {
+        failure(instruction);
       }
       break;
     default:
+      stream.write('Unknown command\0');
+      failure(instruction);
       break;
   }
-  console.log('Command', '\x1b[33m', instruction.toString(), '\x1b[0m', 'fullfilled successfully');
 };
