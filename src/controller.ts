@@ -15,7 +15,6 @@ export const CommandsController = async (
 ): Promise<void> => {
   const [command, width, height] = parseArgs(instruction);
   const pos = getMousePosition();
-  console.log(command, width, height);
   switch (command) {
     case FrontCommands.circle:
       if (typeof width === 'number') {
