@@ -5,10 +5,9 @@
     "main": "index.js",
     "type": "module",
     "scripts": {
-        "start": "node ./index.js",
-        "start:dev": "nodemon ./index.js",
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start:backend": "nodemon ./backend.ts"
+        "start:all": "(start npm run start:front && start npm run start:back) || (npm run start:front & npm run start:back)",
+        "start:front": "node ./index.js",
+        "start:back": "nodemon ./backend.ts"
     },
     "author": "Andrei Auchynnikau",
     "keywords": [],
