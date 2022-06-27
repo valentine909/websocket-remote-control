@@ -5,24 +5,28 @@
     "main": "index.js",
     "type": "module",
     "scripts": {
-        "start": "node ./index.js",
-        "start:dev": "nodemon ./index.js",
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start:backend": "nodemon ./backend.ts"
+        "start:all": "(start npm run start:front && start npm run start:back) || (npm run start:front & npm run start:back)",
+        "start:front": "node ./index.js",
+        "start:back": "nodemon ./backend.ts"
     },
     "author": "Andrei Auchynnikau",
     "keywords": [],
     "license": "ISC",
     "devDependencies": {
-        "@types/dotenv": "^8.2.0",
         "@types/node": "^18.0.0",
         "@types/ws": "^8.5.3",
-        "dotenv": "^16.0.1",
+        "@typescript-eslint/eslint-plugin": "^5.29.0",
+        "@typescript-eslint/parser": "^5.29.0",
+        "eslint": "^8.18.0",
+        "eslint-config-airbnb-base": "^15.0.0",
+        "eslint-plugin-import": "^2.26.0",
         "nodemon": "^2.0.16",
-        "ts-node": "^10.8.1",
-        "tslint": "^6.1.3"
+        "prettier": "^2.7.1",
+        "prettier-eslint": "^15.0.1",
+        "ts-node": "^10.8.1"
     },
     "dependencies": {
+        "dotenv": "^16.0.1",
         "jimp": "^0.16.1",
         "robotjs": "^0.6.0",
         "ws": "^8.8.0"

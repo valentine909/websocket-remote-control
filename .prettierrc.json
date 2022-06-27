@@ -1,0 +1,11 @@
+{
+  "singleQuote": true,
+  "bracketSpacing": true,
+  "tabWidth": 2,
+  "endOfLine": "lf",
+  "insert_final_newline": true,
+  "max_line_length": 120,
+  "trailingComma": "all",
+  "arrowParens": "always",
+  "bracketSameLine": false
+}
